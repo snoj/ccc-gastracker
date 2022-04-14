@@ -63,10 +63,10 @@ function updateGasStats (once) {
     JobQueue.enqueue(fetchTransactions.bind(null, b))
   })
 
-  JobQueue.runTilDone().finally(() => once || setTimeout(updateGasStats, 10000))
+  JobQueue.runTilDone().finally(() => once || setTimeout(updateGasStats, 30000))
 }
 
-initFinished.then(() => updateGasStats(true))
+initFinished.then(() => updateGasStats())
 
 app.get('/triggerupdate', function (req, res) {
   initFinished.then(() => updateGasStats(true))

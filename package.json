@@ -1,0 +1,43 @@
+{
+  "name": "ccc-huntgastracker-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "node ./server.js",
+    "server": "vue-cli-service build && node ./server.js",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "author": "snoj <snoj@snoj.us>",
+  "license": "MIT",
+  "dependencies": {
+    "@jobinsjp/vue3-datatable": "^1.0.15",
+    "axios": "^0.26.1",
+    "core-js": "^3.8.3",
+    "express": "^4.17.3",
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
+    "node-polyfill-webpack-plugin": "^1.1.4",
+    "querystring-es3": "^0.2.1",
+    "sequelize": "^6.19.0",
+    "serve-static": "^1.15.0",
+    "sqlite3": "^5.0.3",
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.14"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-standard": "^6.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-vue": "^8.0.3"
+  }
+}

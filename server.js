@@ -87,6 +87,7 @@ app.get('/gasfees', function (req, res) {
   const where = {}
 
   req?.query?.dayid && (where.dayid = req?.query?.dayid)
+  req?.query?.from && (where.from = req?.query?.from)
 
   /*
     This is vestigial from a poorly conceived idea that it would provide some insight

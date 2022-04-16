@@ -1,5 +1,5 @@
 <template>
-  <table v-bind:id="elementId"></table>
+  <table :id="elementId"></table>
 </template>
 
 <script>
@@ -15,7 +15,7 @@ import _ from 'lodash'
 export default {
   props: {
     dtid: { type: String, required: false },
-    data: { type: Array, required: false },
+    dtData: { type: Array, required: false },
     options: { type: Object, required: false },
     columns: { type: Array, require: false }
   },
@@ -29,19 +29,26 @@ export default {
   computed: {
     elementId () {
       return this.dtid || this.generatedElementId
+    },
+    realdata () {
+      return this.dtData
     }
   },
-
-  setup () {
-    // this.generatedElementId = _.uniqueId('dt')
+  methods: {
+    draw () {
+      if (this.table?.clear != null) {
+        this.table.clear().rows.add(this.dtData).draw()
+      } else {
+        const o = _.defaults(this.options, { columns: this.columns }, { data: this.dtData })
+        this.table = $(`#${this.elementId}`).DataTable(o)
+      }
+    }
   },
-
+  mounted () {
+    this.draw()
+  },
   updated () {
-    if (this.table?.destroy != null) {
-      this.table.destroy()
-    }
-    const o = _.defaults(this.options, { columns: this.columns }, { data: this.data })
-    this.table = $(`#${this.elementId}`).DataTable(o)
+    this.draw()
   }
 }
 </script>

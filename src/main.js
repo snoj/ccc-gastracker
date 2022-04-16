@@ -7,6 +7,8 @@ import DailyFeesTotal from './components/DailyFeesTotal.vue'
 
 const routes = [
   { path: '/dailyfees', component: DailyFees },
+  { path: '/dailyfees/day/:dayid', component: DailyFees },
+  { path: '/dailyfees/from/:from', component: DailyFees },
   { path: '/dailyfeestotal', component: DailyFeesTotal }
 ]
 

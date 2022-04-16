@@ -1,15 +1,16 @@
 <template>
   <div>Daily Fees</div>
   <!--<data-table :rows='gasfees' :columns='columns' sortable />-->
-  <data-table :dtid="dt-dailyfees" :data="gasfees" :columns="dtColumns" :options="dtOptions" />
+  <data-table :dtid="'dt-dailyfees'" v-bind:dtData="gasfees" :columns="dtColumns" :options="dtOptions" />
 </template>
 <script>
 import { defineComponent } from 'vue'
 // import { DataTable } from '@jobinsjp/vue3-datatable'
-import querystring from 'querystring'
+// import querystring from 'querystring'
 import '@jobinsjp/vue3-datatable/dist/style.css'
 import DataTable from './DataTable.vue'
 // import $ from 'jquery'
+import _ from 'lodash'
 
 export default defineComponent({
   components: { DataTable },
@@ -24,30 +25,34 @@ export default defineComponent({
         order: [[0, 'desc']]
       },
       dtColumns: [
-        { title: 'Day', data: 'dayid', render: (d) => `<a href="#/dailyfeestotal?dayid=${d}">${d}</a>` },
-        { title: 'Batch', data: 'from' },
+        { title: 'Day', data: 'dayid', render: (d) => `<a href="#/dailyfees/day/${d}">${d}</a>` },
+        { title: 'Batch', data: 'from', render: (d) => `<a href="#/dailyfees/from/${d}">${d}</a>` },
         { title: 'Gas (in AVAX)', data: 'totalGasFees' }
       ],
       tmpGasfees: [] // (await fetch('/gasfees')).json()
     }
   },
   computed: {
-    gasfees: function () {
-      return this.tmpGasfees || []
+    gasfees: {
+      get () {
+        const q = {}
+        !this.$route?.params?.from || (q.from = this.$route?.params.from)
+        !this.$route?.params?.dayid || (q.dayid = this.$route?.params.dayid)
+        const uq = _.keys(q).length > 0
+
+        const items = _.filter((this.tmpGasfees || []), uq ? q : null)
+        return items
+      },
+      set () { }
     }
   },
   methods: {
     async initData () {
-      window.that = this
-
-      this.tmpGasfees = (await (await fetch(`/gasfees?${querystring.stringify(this.$route.query)}`)).json())?.data || []
+      this.tmpGasfees = (await (await fetch('/gasfees')).json())?.data || []
     }
   },
   async beforeMount () {
     await this.initData()
-  },
-  async unmounted () {
-    console.log('unmounted dailyfees')
   }
 })
 </script>

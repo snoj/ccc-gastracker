@@ -10,6 +10,8 @@ const conf = {
   keys: require('./constants/keys.json')
 }
 
+const querystring = require('querystring')
+
 const _ = global.ld = require('lodash')
 const { default: axios } = require('axios')
 
@@ -38,7 +40,15 @@ async function fetchTransactions (targetAddress) {
       }
     }, { logging: false })) || 10855480) + 1
 
-    const url = `https://api.snowtrace.io/api?module=account&action=txlist&address=${targetAddress}&startblock=${lastKnownBlock}&apikey=${process.env.SNOWTRACEKEY || conf?.keys?.snowtrace}`
+    let qs = querystring.stringify({
+      module: 'account',
+      action: 'txlist',
+      address: targetAddress,
+      startblock: lastKnownBlock,
+      apikey: process.env.SNOWTRACEKEY || conf?.keys?.snowtrace
+    })
+    
+    const url = `https://api.snowtrace.io/api?${qs}`
 
     console.log(targetAddress, lastKnownBlock, url)
     const reqresult = await axios.get(url).catch(() => ({ data: { result: [] } }))
@@ -63,7 +73,7 @@ function updateGasStats (once) {
     JobQueue.enqueue(fetchTransactions.bind(null, b))
   })
 
-  JobQueue.runTilDone().finally(() => once || setTimeout(updateGasStats, 30000))
+  JobQueue.runTilDone().finally(() => once || setTimeout(updateGasStats, 10000))
 }
 
 initFinished.then(() => updateGasStats())

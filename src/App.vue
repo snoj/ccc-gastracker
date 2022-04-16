@@ -9,8 +9,8 @@
 export default {
   name: 'App',
   data: () => ({
-    batches: require('./constants/huntBatchPool.json'),
-    keys: require('./constants/keys.json')
+    // batches: require('./constants/huntBatchPool.json'),
+    // keys: require('./constants/keys.json')
   }),
   setup: () => {
 
